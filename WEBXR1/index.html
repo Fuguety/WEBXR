@@ -1,13 +1,108 @@
 <!doctype html>
 <html lang="en">
   <head>
+
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/@c-frame/aframe-particle-system-component@1.2.x/dist/aframe-particle-system-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-simple-sun-sky@^1.2.2/simple-sun-sky.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
+
+
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
     <title>Vite + TS</title>
+  
   </head>
+  
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+
+    <a-scene renderer="äntialias: true;
+                      colorManagement: true
+                      sortTransparentObjects: true">
+
+      
+      <!--
+      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+      <a-sky color="#ECECEC"></a-sky>
+      -->
+    
+
+
+      <!-- WASDB controls -->
+      <a-entity camera look-controls wasd-controls="acceleration:100" position="0 1.6 0"></a-entity>
+
+
+      <!-- stats UI -->
+      <a-scene stats></a-scene>
+
+      <!-- fog -->
+      <a-scene fog="type: linear; color: white; near: 1; far: 1000; density: 0.01"></a-scene>
+
+      <!-- rain -->
+      <a-entity id="rain" particle-system="preset: snow; color: #24CAFF; particleCount: 5000"></a-entity>
+
+
+      <!-- test entity 1 -->
+      <a-text value="$90,312.23"
+         position="0 1 -5"
+         color="black"
+         align="center"></a-text>
+
+      <a-entity id="test" geometry="primitive: box; width: 2; height: 1; depth: 1;"
+         material="color: yellow; metalness: 1; roughness: 0.5;"
+         position="0 0.15 -5"
+         light="type: point; intensity: 5"
+         animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 1000; to: 0 -0.10 -5; loop: true"
+         obb-collider="showColliders: true; trackedObject3D: camera"
+         rotation="75 5 40"
+         >
+      </a-entity>
+
+
+
+      <!-- Test entity 2 -->
+      <a-text value="undefined"
+         position="4 2 -5"
+         color="black"
+         align="center"></a-text>
+
+      <a-entity id="test2" geometry="primitive: sphere; radius: 1.8;"
+         material="color: red; metalness: 1; roughness: 0.5;"
+         position="4 -0.15 -5"
+         animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 1000; to: 4 0.10 -5; loop: true"
+         obb-collider="showColliders: true; trackedObject3D: camera; size: 0.5 0.5 0.5;"
+         >
+      </a-entity>
+
+
+
+      <a-entity id="ocean" ocean="density: 20; width: 50; depth: 50; speed: 4"
+         material="color: #9CE3F9; opacity: 0.75; metalness: 0; roughness: 1 shader:ocean"
+         rotation="-90 0 0"></a-entity>
+
+      <!-- Sun -->
+      <a-simple-sun-sky sun-position="5 7 -5"></a-simple-sun-sky>
+
+
+      <a-entity id="light" light="type: ambient; color: #888"></a-entity>
+
+      <!-- reflection -->
+      <a-scene reflection="directionalLight:a-light#dirlight;"></a-scene>
+      <a-light id="dirlight" intensity="1" light="castShadow:true;type:directional" position="0 1 -5"></a-light>
+
+
+      <!-- shadows -->
+      <a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
+      <a-gltf-model src="tree.gltf" shadow="receive: false"></a-gltf-model>
+
+    </a-scene>
+
   </body>
+
+
 </html>
