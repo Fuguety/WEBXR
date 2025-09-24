@@ -7,6 +7,79 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-simple-sun-sky@^1.2.2/simple-sun-sky.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
 
+   <script>
+
+          AFRAME.registerComponent('player-controls', {
+        init: function () {
+          const el = this.el;
+          const velocity = new THREE.Vector3();
+          let isSprinting = false;
+          let canJump = true;
+
+            window.addEventListener('keydown', e => {
+              if (e.code === 'ShiftLeft')
+              {
+                isSprinting = true;
+                el.setAttribute('movement-controls', 'speed', 2);
+              }
+
+            if (e.code === 'Space' && canJump)
+               {
+               canJump = false;
+               const startPos = el.getAttribute('position');
+               const jumpHeight = 3;
+
+               // go up
+               el.setAttribute('animation__jumpup', 
+               {
+                  property: 'position',
+                  to: `${startPos.x} ${startPos.y + jumpHeight} ${startPos.z}`,
+                  dur: 300,
+                  easing: 'easeOutQuad'
+               });
+
+               
+
+               // fall back down
+               el.setAttribute('animation__jumpdown', 
+               {
+                  property: 'position',
+                  to: `${startPos.x} ${startPos.y} ${startPos.z}`,
+                  dur: 300,
+                  delay: 300,
+                  easing: 'easeInQuad'
+               });
+
+
+               // cooldown
+               setTimeout(() => canJump = true, 900);
+               
+            }
+
+            });
+
+
+
+
+          window.addEventListener('keyup', e => 
+          {
+            if (e.code === 'ShiftLeft') isSprinting = false;
+          });
+
+          el.addEventListener('componentchanged', evt => {
+            if (evt.detail.name === 'movement-controls') 
+            {
+              // Adjust speed dynamically
+              const speed = isSprinting ? 1 : 0.8;
+              el.setAttribute('movement-controls', 'speed', speed);
+            }
+          });
+        }
+
+      });
+    </script>
+
+
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,11 +91,56 @@
   
   <body>
 
-    <a-scene renderer="äntialias: true;
+    <a-scene renderer="antialias: true;
                       colorManagement: true
-                      sortTransparentObjects: true">
+                      sortTransparentObjects: true"
+                      >
 
-      
+         <a-assets>
+         <img id="ground" src="ground.jpg"></img>
+         </a-assets>
+
+         
+   <!-- Row z = -10 -->
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="-10, 0, -10"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="-5, 0, -10"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="0, 0, -10"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="5, 0, -10"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="10, 0, -10"></a-plane>
+
+   <!-- Row z = -5 -->
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="-10, 0, -5"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="-5, 0, -5"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="0, 0, -5"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="5, 0, -5"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="10, 0, -5"></a-plane>
+
+   <!-- Row z = 0 -->
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="-10, 0, 0"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="-5, 0, 0"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="0, 0, 0"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="5, 0, 0"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="10, 0, 0"></a-plane>
+
+   <!-- Row z = 5 -->
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="-10, 0, 5"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="-5, 0, 5"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="0, 0, 5"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="5, 0, 5"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="10, 0, 5"></a-plane>
+
+   <!-- Row z = 10 -->
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="-10, 0, 10"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="-5, 0, 10"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="0, 0, 10"></a-plane>
+   <a-plane color="white" height="5" width="5" rotation="-90, 0, 0" position="5, 0, 10"></a-plane>
+   <a-plane color="gray"  height="5" width="5" rotation="-90, 0, 0" position="10, 0, 10"></a-plane>
+
+
+
+
+
+    
       <!--
       <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
       <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
@@ -34,8 +152,11 @@
 
 
       <!-- WASDB controls -->
-      <a-entity camera look-controls wasd-controls="acceleration:100" position="0 1.6 0"></a-entity>
-
+      <a-entity id="player" movement-controls="speed: 0.8" 
+                player-controls 
+                position="0 1.6 0">
+        <a-entity camera look-controls></a-entity>
+      </a-entity>
 
       <!-- stats UI -->
       <a-scene stats></a-scene>
@@ -45,6 +166,13 @@
 
       <!-- rain -->
       <a-entity id="rain" particle-system="preset: snow; color: #24CAFF; particleCount: 5000"></a-entity>
+
+      <!-- Ocean -->
+      <a-entity id="ocean" ocean="density: 20; width: 50; depth: 50; speed: 4"
+         material="color: #9CE3F9; opacity: 0.75; metalness: 0; roughness: 1 shader:ocean"
+         rotation="-90 0 0"></a-entity>
+
+      
 
 
       <!-- test entity 1 -->
@@ -81,9 +209,7 @@
 
 
 
-      <a-entity id="ocean" ocean="density: 20; width: 50; depth: 50; speed: 4"
-         material="color: #9CE3F9; opacity: 0.75; metalness: 0; roughness: 1 shader:ocean"
-         rotation="-90 0 0"></a-entity>
+
 
       <!-- Sun -->
       <a-simple-sun-sky sun-position="5 7 -5"></a-simple-sun-sky>
