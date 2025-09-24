@@ -9,62 +9,55 @@
 
    <script>
 
-          AFRAME.registerComponent('player-controls', {
-        init: function () {
+          AFRAME.registerComponent('player-controls', 
+          {
+          init: function () {
           const el = this.el;
           const velocity = new THREE.Vector3();
           let isSprinting = false;
           let canJump = true;
 
-            window.addEventListener('keydown', e => {
+            window.addEventListener('keydown', e => 
+            {
               if (e.code === 'ShiftLeft')
+                {
+                  isSprinting = true;
+                  el.setAttribute('movement-controls', 'speed', 2);
+                }
+
+              if (e.code === 'Space' && canJump)
+                
               {
-                isSprinting = true;
-                el.setAttribute('movement-controls', 'speed', 2);
+                canJump = false;
+                const startPos = el.getAttribute('position');
+                const jumpHeight = 3;
+
+                // go up
+                el.setAttribute('animation__jumpup', 
+                {
+                    property: 'position',
+                    to: `${startPos.x} ${startPos.y + jumpHeight} ${startPos.z}`,
+                    dur: 300,
+                    easing: 'easeOutQuad',
+                    dir: 'alternate',
+                    loop: 1
+                });
+
+                // cooldown
+                setTimeout(() => canJump = true, 600);
+                
               }
-
-            if (e.code === 'Space' && canJump)
-               {
-               canJump = false;
-               const startPos = el.getAttribute('position');
-               const jumpHeight = 3;
-
-               // go up
-               el.setAttribute('animation__jumpup', 
-               {
-                  property: 'position',
-                  to: `${startPos.x} ${startPos.y + jumpHeight} ${startPos.z}`,
-                  dur: 300,
-                  easing: 'easeOutQuad'
-               });
-
-               
-
-               // fall back down
-               el.setAttribute('animation__jumpdown', 
-               {
-                  property: 'position',
-                  to: `${startPos.x} ${startPos.y} ${startPos.z}`,
-                  dur: 300,
-                  delay: 300,
-                  easing: 'easeInQuad'
-               });
-
-
-               // cooldown
-               setTimeout(() => canJump = true, 900);
-               
-            }
 
             });
 
 
 
 
+          
           window.addEventListener('keyup', e => 
-          {
-            if (e.code === 'ShiftLeft') isSprinting = false;
-          });
+            {
+              if (e.code === 'ShiftLeft') isSprinting = false;
+            });
 
           el.addEventListener('componentchanged', evt => {
             if (evt.detail.name === 'movement-controls') 
