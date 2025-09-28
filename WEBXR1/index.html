@@ -118,7 +118,7 @@
         <!-- Ground Plane -->
         <a-plane width="25" height="25"
                 rotation="-90 0 0"
-                material="src: #checker; repeat: 10 10; side: double"
+                material="src: #ground; repeat: 2 2; side: double"
                 static-body
                 >
         </a-plane>
@@ -163,12 +163,8 @@
 
 
         <!-- shadows -->
-        <a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
-        <a-gltf-model src="tree.gltf" shadow="receive: false"></a-gltf-model>
-
-
-
-
+        <a-light type="directional" light="castShadow:true;" position="5 7 -5" intensity="1" shadow-camera-automatic="#objects"></a-light>
+        <a-entity light="type: hemisphere; color: green; groundColor: green; intensity: 2"></a-entity>
 
 
         <!-- Ocean -->
@@ -181,53 +177,256 @@
 
 
 
-        <!-- Test entity 1 -->
+        <a-entity id="test-entities">
+              <!-- Test entity 1 -->
+              <a-entity id="test" geometry="primitive: box; width: 2; height: 1; depth: 1;"
+                material="color: yellow; metalness: 1; roughness: 0.5;"
+                position="0 0.15 -20"
+                light="type: point; intensity: 5"
+                animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 1000; to: 0 -0.10 -20; loop: true"
+                rotation="75 5 40"
+                >
+
+              <a-text value="$90,312.23"
+                position="0 2 0"
+                color="red"
+                align="center"
+                side="double"></a-text>
+
+              </a-entity>
 
 
-        <a-entity id="test" geometry="primitive: box; width: 2; height: 1; depth: 1;"
-          material="color: yellow; metalness: 1; roughness: 0.5;"
-          position="0 0.15 -20"
-          light="type: point; intensity: 5"
-          animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 1000; to: 0 -0.10 -20; loop: true"
-          rotation="75 5 40"
-          >
 
-        <a-text value="$90,312.23"
-          position="0 2 0"
-          color="red"
-          align="center"
-          side="double"></a-text>
+              <!-- Test entity 2 -->
+              <a-entity id="test2" geometry="primitive: sphere; radius: 1.8;"
+                material="color: red; metalness: 1; roughness: 0.5;"
+                position="4 -0.15 -20"
+                animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 1000; to: 4 0.10 -20; loop: true"
+                >
+                <a-text value="undefined"
+                position="0 2 0"
+                color="black"
+                align="center"
+                side="double"></a-text>
+              </a-entity>
+
+
+
+              <!-- Test entity 3  Moving Box-->
+              <a-box
+                position="-10 1 -10"
+                width="1" height="1" depth="1"
+                material="src: #error; side: double"
+                animation="property: position; to: 10 1 -10; dur: 3000; easing: linear; dir: alternate; loop: true"
+                >
+                <a-text value="Moving Box" align="center" position="0 1 0" side="double"></a-text>
+              </a-box>
 
         </a-entity>
 
 
+        <a-entity id="pool" position="0 0 17.5">
 
-        <!-- Test entity 2 -->
-        <a-entity id="test2" geometry="primitive: sphere; radius: 1.8;"
-          material="color: red; metalness: 1; roughness: 0.5;"
-          position="4 -0.15 -20"
-          animation="property: position; easing: easeInOutQuad; dir: alternate; dur: 1000; to: 4 0.10 -20; loop: true"
-          >
-          <a-text value="undefined"
-          position="0 2 0"
-          color="black"
-          align="center"
-          side="double"></a-text>
+          <a-text value="Physics pool" align="center" position="0 4 0" side="double" rotation="0 180 0" scale="2" color="black"></a-text>
+
+        <a-entity id="objects">
+          <!-- Falling objects -->
+          <a-sphere radius="1" height="0.5" 
+                    material="src: #error; side: double"
+                    position="0 1 0"
+                    dynamic-body
+                    >
+          </a-sphere>
+
+          <a-sphere radius="0.4" height="0.3" 
+                    material="src: #error; side: double"
+                    position="0 2 -1"
+                    dynamic-body
+                    >
+          </a-sphere>
+
+          <a-sphere radius="0.7" height="0.2" 
+                    material="src: #error; side: double"
+                    position="0 3 0"
+                    dynamic-body
+                    >
+          </a-sphere>
+
+
+          <a-cone position="1 7 -3" radius="0.5" height="1" 
+                rotation="-90 0 0"
+                material="src: #error; side: double" 
+                dynamic-body>
+          </a-cone>
+
+          <a-cone position="1 7 0" radius="0.5" height="1" 
+                rotation="-90 0 0"
+                material="src: #error; side: double" 
+                dynamic-body>
+          </a-cone>
+
+            <a-box
+              position="-3 -1 0"
+              width="1" height="1" depth="1"
+              material="src: #error; side: double"
+              animation="property: position; to: 3 -1 -5;  dur: 3000; easing: linear; dir: alternate; loop: true"
+              >
+              <a-text value="Moving Box" align="center" position="0 1 0" side="double" rotation="0 180 0"></a-text>
+            </a-box>
+          </a-entity>
+
+
+          <a-entity id="pool-enclosure">
+              <!-- Floor -->
+              <a-plane width="10" height="10"
+                      position="0 -2 0"
+                      rotation="-90 0 0"
+                      material="src: #checker; repeat: 10 10; side: double"
+                      static-body>
+              </a-plane>
+
+              <!-- Walls -->
+              <!-- Back wall -->
+              <a-plane width="10" height="2.5"
+                      position="0 -1 -5"
+                      rotation="0 0 0"
+                      material="src: #grid; repeat: 4 4; side: double"
+                      static-body>
+              </a-plane>
+
+              <!-- Front wall -->
+              <a-plane width="10" height="4"
+                      position="0 0 5"
+                      rotation="0 180 0"
+                      material="src: #grid; repeat: 4 4; side: double"
+                      static-body>
+              </a-plane>
+
+              <!-- Left wall -->
+              <a-plane width="10" height="4"
+                      position="-5 0 0"
+                      rotation="0 90 0"
+                      material="src: #grid; repeat: 4 4; side: double"
+                      static-body>
+              </a-plane>
+
+              <!-- Right wall -->
+              <a-plane width="10" height="4"
+                      position="5 0 0"
+                      rotation="0 -90 0"
+                      material="src: #grid; repeat: 4 4; side: double"
+                      static-body>
+              </a-plane>
+          </a-entity>
+        </a-entity>
+
+
+        <a-entity id="dark room" position="17.5 0 0">
+
+          <a-text value="Dark room" align="center" position="-5 3 0" side="double" rotation="0 -90 0" scale="2" color="white"></a-text>
+          <a-text value="HOW BIG IS THE LIMIT OF THIS STRING, SOMEONE PLEASE HELP ME I DONT KNOW WHAT ELSE TO PUT HERE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA APARENTLY THE TEXT HAS A LENGH LIMIT BY DEFAULT, WOOOOW!!! SO COOL RIGHT??? \n\n NO :(" align="center" position="5 2 0" side="double" rotation="0 -90 0" scale="1" color="#ff69b4"></a-text>
+
+
+          <a-entity light="type: point; color: #0ff; intensity: 5; distance: 15"
+          position="0 1 0">
+              <a-box
+                depth="1" height="1" width="1"
+                material="color: #111; emissive: #0ff; emissiveIntensity: 5; side: double"
+                visible="true">
+              </a-box>
+          </a-entity>
+
+
+          <a-sphere position="0 1.5 3" radius="1"
+                    material="color: white; metalness: 1; roughness: 0">
+          </a-sphere>
+          <a-box position="-2 1.5 -3" depth="1" height="1" width="1"
+                material="color: gray; metalness: 0; roughness: 1">
+          </a-box>
+
+        <a-entity id="room-enclosure">
+              <!-- Floor -->
+              <a-plane width="10" height="10"
+                      position="0 0 0"
+                      rotation="-90 0 0"
+                      material="color: #000; side: double; shader: flat;"
+                      static-body>
+              </a-plane>
+
+              <!-- Back wall -->
+              <a-plane width="10" height="4"
+                      position="0 1.5 -5"
+                      rotation="0 0 0"
+                      material="color: #000; side: double; shader: flat;"
+                      static-body>
+              </a-plane>
+
+              <!-- Front wall -->
+              <a-plane width="10" height="4"
+                      position="0 1.5 5"
+                      rotation="0 180 0"
+                      material="color: #000; side: double; shader: flat;"
+                      static-body>
+              </a-plane>
+
+
+              <!-- Right wall -->
+              <a-plane width="10" height="4"
+                      position="5 1.5 0"
+                      rotation="0 -90 0"
+                      material="color: #000; side: double; shader: flat;"
+                      static-body>
+              </a-plane>
+
+              <!-- Roof -->
+              <a-plane width="10" height="10"
+                      position="0 3.5 0"
+                      rotation="90 0 0"
+                      material="color: #000; side: double; shader: flat;"
+                      static-body>
+              </a-plane>
+
+        </a-entity>
+
+      
+      
         </a-entity>
 
 
 
-        <!-- Test entity 3  Moving Box-->
-        <a-box
-          position="-10 1 -10"
-          width="1" height="1" depth="1"
-          material="src: #error; side: double"
-          animation="property: position; to: 10 1 -10; dur: 3000; easing: linear; dir: alternate; loop: true"
-          >
-          <a-text value="Moving Box" align="center" position="0 1 0" side="double"></a-text>
-        </a-box>
+        <a-plane width="5" height="4"
+                      position="-12.5 3 0"
+                      rotation="0 90 0"
+                      material="src: https://i.ytimg.com/vi/g_Y9ZV-y3bM/maxresdefault.jpg; side: double"
+                      static-body>
+        </a-plane>
+
+        
+        <a-plane width="5" height="4"
+                      position="-12.5 3 -5.5"
+                      rotation="0 90 0"
+                      material="src: https://gaming.lenovo.com/emea/attachment.php?attachmentid=2968; side: double"
+                      static-body>
+        </a-plane>
 
 
+        
+        <a-plane width="5" height="4"
+                      position="-12.5 3 5.5"
+                      rotation="0 90 0"
+                      material="src: https://i.guim.co.uk/img/media/dd3882c4ad0fd11a14cffc7e5edaabe5ce8a8b53/0_85_1077_646/master/1077.jpg?width=445&dpr=1&s=none&crop=none; side: double"
+                      static-body>
+        </a-plane>
+
+
+        <a-plane width="5" height="4"
+          position="0 5 -5"
+          rotation="0 0 0"
+          material="src: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4TI7MkyHxrye7TYcPsjI_Q9k6o8UPbTwOOe6rQJHEqQQZuqaMK0GJzJxRZR-ZLZu5ybI&usqp=CAU; side: double"
+          static-body>
+        </a-plane>
+
+        
 
       </a-scene>
 
